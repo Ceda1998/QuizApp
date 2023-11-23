@@ -23,3 +23,17 @@ body {
 .quiz-card {
     width: 30rem;
 }
+
+.quizAnswerCard:hover {
+    background-color: rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: ease-in 300ms;
+}
+
+.bg-success, .bg-danger {
+    color: white !important;
+}
+
+.bg-success {
+    transition: ease-in 1000ms;
+}
