@@ -29,7 +29,7 @@ let questions = [
     answer_2: "Australien",
     answer_3: "Kanada",
     answer_4: "Russland",
-    correct_answer: 1,
+    correct_answer: 4,
   },
   {
     question: "Welches Land hat keine Demokratie?",
@@ -42,6 +42,7 @@ let questions = [
 ];
 
 let currentQuestion = 0;
+let number = 1;
 
 function init() {
   document.getElementById("allQuestions").innerHTML = questions.length;
@@ -49,13 +50,20 @@ function init() {
 }
 
 function showCurrentQuestion() {
-  let question = questions[currentQuestion];
-
-  document.getElementById("questionText").innerHTML = `${question["question"]}`;
-  document.getElementById("answer_1").innerHTML = `${question["answer_1"]}`;
-  document.getElementById("answer_2").innerHTML = `${question["answer_2"]}`;
-  document.getElementById("answer_3").innerHTML = `${question["answer_3"]}`;
-  document.getElementById("answer_4").innerHTML = `${question["answer_4"]}`;
+  if (currentQuestion >= questions.length) { //ist aktuelle Frage größer oder gleich die Array länge dann Endscreen
+    console.log("End Screen");
+  } else {
+    let question = questions[currentQuestion];
+    let numberfield = document.getElementById("atCurrentQuestion");
+    numberfield.innerHTML = number++;
+    document.getElementById(
+      "questionText"
+    ).innerHTML = `${question["question"]}`;
+    document.getElementById("answer_1").innerHTML = `${question["answer_1"]}`;
+    document.getElementById("answer_2").innerHTML = `${question["answer_2"]}`;
+    document.getElementById("answer_3").innerHTML = `${question["answer_3"]}`;
+    document.getElementById("answer_4").innerHTML = `${question["answer_4"]}`;
+  }
 }
 
 function answer(selection) {
@@ -72,4 +80,22 @@ function answer(selection) {
       .parentNode.classList.add("bg-success");
   }
   document.getElementById("nextButton").disabled = false;
+}
+
+function nextQuestion() {
+  currentQuestion++; //von 0 auf 1 erhöht
+  showCurrentQuestion(); //zeigt die neue Frage an
+  document.getElementById("nextButton").disabled = true;
+  resetAnswerButtons();
+}
+
+function resetAnswerButtons() {
+  document.getElementById("answer_1").parentNode.classList.remove("bg-danger");
+  document.getElementById("answer_1").parentNode.classList.remove("bg-success");
+  document.getElementById("answer_2").parentNode.classList.remove("bg-danger");
+  document.getElementById("answer_2").parentNode.classList.remove("bg-success");
+  document.getElementById("answer_3").parentNode.classList.remove("bg-danger");
+  document.getElementById("answer_3").parentNode.classList.remove("bg-success");
+  document.getElementById("answer_4").parentNode.classList.remove("bg-danger");
+  document.getElementById("answer_4").parentNode.classList.remove("bg-success");
 }
