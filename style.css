@@ -17,7 +17,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-top: 10px;
-    
+    padding-bottom: 10px;
 }
 
 .quiz-card {
@@ -36,4 +36,15 @@ body {
 
 .bg-success {
     transition: ease-in 1000ms;
+}
+
+.finsishedHeadline {
+    display: flex;
+    justify-content: center;
+}
+
+.buttonEndScreen {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }

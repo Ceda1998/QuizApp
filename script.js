@@ -41,8 +41,11 @@ let questions = [
   },
 ];
 
+let rightQuestions = 0;
 let currentQuestion = 0;
 let number = 1;
+let correctAudio = new Audio('./sounds/correct.wav');
+let wrongAudio = new Audio('./sounds/wrong.wav');
 
 function init() {
   document.getElementById("allQuestions").innerHTML = questions.length;
@@ -50,9 +53,20 @@ function init() {
 }
 
 function showCurrentQuestion() {
-  if (currentQuestion >= questions.length) { //ist aktuelle Frage größer oder gleich die Array länge dann Endscreen
-    console.log("End Screen");
+  if (currentQuestion >= questions.length) {
+    //ist aktuelle Frage größer oder gleich die Array länge dann Endscreen
+
+    document.getElementById("endScreen").style = "";
+    document.getElementById("questionBody").style = "display:none";
+    document.getElementById("finshedAllQuestions").innerHTML = questions.length;
+    document.getElementById("amountRightQuestions").innerHTML = rightQuestions;
+    document.getElementById("imgCard").src = "./img/pokal.jpg";
   } else {
+    let percent = (currentQuestion + 1) / questions.length;
+    percent = Math.round(percent * 100); //percent ist das gleiche wie percent * 100
+    document.getElementById("progressBar").innerHTML = `${percent.toFixed(0)}%`;
+    document.getElementById("progressBar").style.width = `${percent}%`;
+
     let question = questions[currentQuestion];
     let numberfield = document.getElementById("atCurrentQuestion");
     numberfield.innerHTML = number++;
@@ -73,11 +87,14 @@ function answer(selection) {
 
   if (selectedQuestionNumber == question["correct_answer"]) {
     document.getElementById(selection).parentNode.classList.add("bg-success");
+    rightQuestions++;
+    correctAudio.play();
   } else {
     document.getElementById(selection).parentNode.classList.add("bg-danger");
     document
       .getElementById(idOfRightAnswer)
       .parentNode.classList.add("bg-success");
+      wrongAudio.play();
   }
   document.getElementById("nextButton").disabled = false;
 }
@@ -98,4 +115,14 @@ function resetAnswerButtons() {
   document.getElementById("answer_3").parentNode.classList.remove("bg-success");
   document.getElementById("answer_4").parentNode.classList.remove("bg-danger");
   document.getElementById("answer_4").parentNode.classList.remove("bg-success");
+}
+
+function resetGame() {
+  rightQuestions = 0; //Variablen resetten
+  currentQuestion = 0;
+  number = 1;
+  init();
+  document.getElementById("imgCard").src = "./img/quizappfoto.jpg";
+  document.getElementById("endScreen").style = "display:none";
+  document.getElementById("questionBody").style = '';
 }
