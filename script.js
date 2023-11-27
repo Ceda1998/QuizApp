@@ -43,9 +43,9 @@ let questions = [
 
 let rightQuestions = 0;
 let currentQuestion = 0;
-let number = 1;
-let correctAudio = new Audio('./sounds/correct.wav');
-let wrongAudio = new Audio('./sounds/wrong.wav');
+let QuestionNumber = 1;
+let correctAudio = new Audio("./sounds/correct.wav");
+let wrongAudio = new Audio("./sounds/wrong.wav");
 
 function init() {
   document.getElementById("allQuestions").innerHTML = questions.length;
@@ -54,29 +54,16 @@ function init() {
 
 function showCurrentQuestion() {
   if (currentQuestion >= questions.length) {
-    //ist aktuelle Frage größer oder gleich die Array länge dann Endscreen
-
-    document.getElementById("endScreen").style = "";
-    document.getElementById("questionBody").style = "display:none";
-    document.getElementById("finshedAllQuestions").innerHTML = questions.length;
-    document.getElementById("amountRightQuestions").innerHTML = rightQuestions;
-    document.getElementById("imgCard").src = "./img/pokal.jpg";
+    showEndScreen();
   } else {
-    let percent = (currentQuestion + 1) / questions.length;
+    let percent = currentQuestion / questions.length;
     percent = Math.round(percent * 100); //percent ist das gleiche wie percent * 100
     document.getElementById("progressBar").innerHTML = `${percent.toFixed(0)}%`;
     document.getElementById("progressBar").style.width = `${percent}%`;
-
     let question = questions[currentQuestion];
     let numberfield = document.getElementById("atCurrentQuestion");
-    numberfield.innerHTML = number++;
-    document.getElementById(
-      "questionText"
-    ).innerHTML = `${question["question"]}`;
-    document.getElementById("answer_1").innerHTML = `${question["answer_1"]}`;
-    document.getElementById("answer_2").innerHTML = `${question["answer_2"]}`;
-    document.getElementById("answer_3").innerHTML = `${question["answer_3"]}`;
-    document.getElementById("answer_4").innerHTML = `${question["answer_4"]}`;
+    numberfield.innerHTML = QuestionNumber++;
+    returnQuestions(question);
   }
 }
 
@@ -94,7 +81,7 @@ function answer(selection) {
     document
       .getElementById(idOfRightAnswer)
       .parentNode.classList.add("bg-success");
-      wrongAudio.play();
+    wrongAudio.play();
   }
   document.getElementById("nextButton").disabled = false;
 }
@@ -107,22 +94,40 @@ function nextQuestion() {
 }
 
 function resetAnswerButtons() {
-  document.getElementById("answer_1").parentNode.classList.remove("bg-danger");
-  document.getElementById("answer_1").parentNode.classList.remove("bg-success");
-  document.getElementById("answer_2").parentNode.classList.remove("bg-danger");
-  document.getElementById("answer_2").parentNode.classList.remove("bg-success");
-  document.getElementById("answer_3").parentNode.classList.remove("bg-danger");
-  document.getElementById("answer_3").parentNode.classList.remove("bg-success");
-  document.getElementById("answer_4").parentNode.classList.remove("bg-danger");
-  document.getElementById("answer_4").parentNode.classList.remove("bg-success");
+  for (let i = 1; i <= 4; i++) {
+    const answerButton = document.getElementById("answer_" + i);
+    const parentNode = answerButton.parentNode;
+
+    parentNode.classList.remove("bg-danger");
+    parentNode.classList.remove("bg-success");
+  }
 }
 
 function resetGame() {
   rightQuestions = 0; //Variablen resetten
   currentQuestion = 0;
-  number = 1;
+  QuestionNumber = 1;
   init();
   document.getElementById("imgCard").src = "./img/quizappfoto.jpg";
   document.getElementById("endScreen").style = "display:none";
-  document.getElementById("questionBody").style = '';
+  document.getElementById("questionBody").style = "";
+}
+
+function returnQuestions(question) {
+  document.getElementById("questionText").innerHTML = `${question["question"]}`;
+  document.getElementById("answer_1").innerHTML = `${question["answer_1"]}`;
+  document.getElementById("answer_2").innerHTML = `${question["answer_2"]}`;
+  document.getElementById("answer_3").innerHTML = `${question["answer_3"]}`;
+  document.getElementById("answer_4").innerHTML = `${question["answer_4"]}`;
+}
+
+function showEndScreen() {
+  document.getElementById("endScreen").style = "";
+  document.getElementById("questionBody").style = "display:none";
+  document.getElementById("finshedAllQuestions").innerHTML = questions.length;
+  document.getElementById("amountRightQuestions").innerHTML = rightQuestions;
+  document.getElementById("imgCard").src = "./img/pokal.jpg";
+  let percent = 100;
+  document.getElementById("progressBar").innerHTML = `${percent.toFixed(0)}%`;
+  document.getElementById("progressBar").style.width = `${percent}%`;
 }
