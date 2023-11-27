@@ -49,3 +49,9 @@ body {
     display: flex;
     justify-content: center;
 }
+
+/* responsive */
+
+body {
+    overflow: auto;
+}
